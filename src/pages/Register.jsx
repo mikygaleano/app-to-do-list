@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useUser } from "../contexts/userContext"
 import { useNavigate } from "react-router-dom";
 
@@ -7,23 +7,23 @@ export const Register = ()=> {
 
     const navigate = useNavigate();
 
-    const { registerUser } = useUser();
+    const { registerUser, sesion } = useUser();
 
-    const [ userNew, setUserNew ] = useState({userName: '', password: '', register: false});
+    const [ userNew, setUserNew ] = useState({userName: '', password: '', authenticated: false});
 
 
     const handleRegister = (e)=> {
         e.preventDefault();
+        setUserNew({...userNew, authenticated: true});
         registerUser(userNew);
-        setUserNew({...userNew, register: true});
         addUserLocalstorage(userNew)
         navigate('/')
     };
 
     const addUserLocalstorage = (user)=> {
         
-        // Obtener usuarios existentes del localStorage o inicializar un arreglo vacío
-        const existingUser = JSON.parse(localStorage.getItem('users')) || [];
+        // Obtener usuarios existentes del localStorage o inicializar un objeto vacío
+        const existingUser = JSON.parse(localStorage.getItem('users')) || {};
             
         // Verificar si el usuario ya existe antes de agregarlo
         const userExists = existingUser.some((u) => u.userName === user.userName);
@@ -36,7 +36,14 @@ export const Register = ()=> {
             localStorage.setItem('users', JSON.stringify(existingUser));
         } 
 
-    }
+    };
+
+    useEffect(() => {
+        // Si ya hay una sesión, redirige a la página principal
+        if (sesion) {
+            navigate('/');
+        }
+    }, [sesion]);
 
     return (
         <>
