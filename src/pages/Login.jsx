@@ -9,6 +9,14 @@ export const Login = ()=> {
 
     const { loginUser, sesion } = useUser();
 
+    const [ nameUser, setNameUser ] = useState('');
+    const [ password, setPassword ] = useState('');
+
+    const handlelogin = (e)=> {
+        setNameUser(e.target.value);
+        setPassword(e.target.value);
+    };
+
     useEffect(() => {
         // Si ya hay una sesión, redirige a la página principal
         if (sesion) {
@@ -16,21 +24,20 @@ export const Login = ()=> {
         }
     }, [sesion]);
 
-    const [ nameUser, setNameUser ] = useState('');
-
-    const handlelogin = (e)=> {
-        setNameUser(e.target.value);
-    };
-
-
     return (
         <>
-            <form onSubmit={()=> loginUser(nameUser)} >
+            <form onSubmit={()=> loginUser(nameUser, password)} >
                 <input 
                     type="text"
                     placeholder="userName"
                     value={nameUser}
                     onChange={(e)=> handlelogin(e)}
+                />
+                <input 
+                    type="password"
+                    placeholder="password" 
+                    value={password}
+                    onChange={(e)=> handlelogin(e)}    
                 />
                 <button type="submit">Login</button>
             </form>

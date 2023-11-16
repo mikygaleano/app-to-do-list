@@ -18,7 +18,7 @@ export const UserContext = ({children})=> {
     const [sesion, setSesion] = useState(storedSesion ? JSON.parse(storedSesion) : false);
 
     const [ users, setUsers ] = useState([]);
-    
+
     const [currentUsers, setCurrentUsers] = useState(
         storedCurrentUsers ? JSON.parse(storedCurrentUsers) : null
     );
@@ -31,14 +31,15 @@ export const UserContext = ({children})=> {
             setCurrentUsers(NewUser); // Almacena el usuario actual en currentUsers
             setSesion(true);
             localStorage.setItem("sesion", JSON.stringify(true));
-            localStorage.setItem("currentUsers", JSON.stringify(NewUser));            }else {
+            localStorage.setItem("currentUsers", JSON.stringify(NewUser));
+        }else {
             navigate('/')
         }
         return navigate('/')
     };
 
-    const loginUser = (userName)=> {
-        const foundUser = users.find(user=> user.userName === userName);
+    const loginUser = (userName, password)=> {
+        const foundUser = users.find(user=> user.userName === userName && user.password === password);
         if (foundUser) {
             if (sesion === false) {
                 setSesion(true);

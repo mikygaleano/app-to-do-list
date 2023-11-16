@@ -16,27 +16,9 @@ export const Register = ()=> {
         e.preventDefault();
         setUserNew({...userNew, authenticated: true});
         registerUser(userNew);
-        addUserLocalstorage(userNew)
         navigate('/')
     };
 
-    const addUserLocalstorage = (user)=> {
-        
-        // Obtener usuarios existentes del localStorage o inicializar un objeto vacío
-        const existingUser = JSON.parse(localStorage.getItem('users')) || {};
-            
-        // Verificar si el usuario ya existe antes de agregarlo
-        const userExists = existingUser.some((u) => u.userName === user.userName);
-
-        if (!userExists) {
-            // Agregar el nuevo usuario al arreglo
-            existingUser.push(user);
-
-            // Guardar el arreglo actualizado en el localStorage
-            localStorage.setItem('users', JSON.stringify(existingUser));
-        } 
-
-    };
 
     useEffect(() => {
         // Si ya hay una sesión, redirige a la página principal
